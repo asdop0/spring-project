@@ -26,7 +26,7 @@
 - Explicit Invalidation: 데이터 변경이 있을 때, 변경된 데이터를 즉시 반영할 수 있도록 캐시를 명시적으로 삭제하여, 데이터 동기화 문제를 해결했습니다.
 
  <h2>성능 개선 결과</h2>
- Docker로 실행한 Redis에 접속하여 키를 직접 삭제하며 Cache Miss와 Cache Hit 상황에서의 응답 속도를 비교하였습니다. 테스트 데이터는 약 1000건 규모로 구성하여 진행하였습니다.
+ Docker로 실행한 Redis에 접속하여 키를 직접 삭제하며 Cache Miss와 Cache Hit 상황에서의 응답 속도를 비교하였습니다. 테스트 데이터는 약 1000건 규모로 구성하여 진행하였습니다. 공통, 개발, 운영 환경으로 분리하여 서버별 설정을 유연하게 관리할 수 있도록 구축했습니다.
 
  - Cache Miss: 80~100ms
 
@@ -35,4 +35,27 @@
 
 <details>
 <summary><h2>SpringConfigServer</h2></summary>
+ <h2>프로젝트 소개</h2>
+ API 서버들의 환경 설정을 중앙 관리하기 위해 Spring Cloud Config로 설정 서버를 구축한 프로젝트입니다.
+
+ <h2>주요 기능</h2>
+ 
+ - Git 저장소에 설정 파일을 중앙 집중화
+ - 개발/운영 환경에 따라 다른 설정 파일 제공
+ - API 서버가 설정 서버를 통해 외부 설정을 동적으로 읽어옴
+
+ <h2>설정 구조</h2>
+ 
+ ```
+ {server-name}.properties      # 공통 설정 
+ {server-name}-dev.properties  # 개발 설정 
+ {server-name}-prod.properties # 운영 설정 
+ ```
+
+<h2>실습 예시</h2>
+포스트맨으로 '/hello' 요청을 보내면 Config 서버의 환경 설정 파일에 정의된 메시지(dev/prod)에 따라 다른 응답을 반환합니다.
+<img width="278" alt="image" src="https://github.com/user-attachments/assets/541e68ca-1522-4d21-9c99-f527481422b0" />
+
+
+
 </details>
