@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: sw-camping-config
+  cloud:
+    config:
+      uri: http://localhost:8888
