@@ -1,0 +1,14 @@
+server:
+  port: 8888
+
+spring:
+  application:
+    name: ConfigServer
+
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/asdop0/spring-project
+          search-paths: SpringConfigServer/configFile
+          clone-on-start: true
