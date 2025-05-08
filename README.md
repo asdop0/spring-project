@@ -2,7 +2,7 @@
  
 이 프로젝트는 기존에 진행한 프로젝트[sw_project](https://github.com/asdop0/sw_project)를 기반으로, 궁금했던 기술 스택들을 직접 적용해보고 실습한 개인 학습 프로젝트입니다. 
 기술을 적용하면서 동작 원리와 효과를 기록으로 남기고 있으며, 이를 통해 실무에 필요한 기초 역량을 차근차근 쌓아가고 있습니다.
-현재는 포트폴리오 겸 학습용으로 운영 중이며, 앞으로도 관심 있는 기술들을 추가로 실험하고 확장해나갈 예정입니다
+또한, 앞으로도 관심 있는 기술들을 추가로 실험하고 확장해나갈 예정입니다
 
 <details>
 <summary><h2>sw-camping-redis</h2></summary>
@@ -31,4 +31,8 @@
  - Cache Miss: 80~100ms
 
  - Cache Hit: 10~20ms
+</details>
+
+<details>
+<summary><h2>SpringConfigServer</h2></summary>
 </details>
