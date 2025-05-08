@@ -53,7 +53,7 @@
  ```
 
 <h2>실습 예시</h2>
-포스트맨으로 '/hello' 요청을 보내면 Config 서버의 환경 설정 파일에 정의된 메시지(dev/prod)에 따라 다른 응답을 반환합니다.
+포스트맨으로 '/hello' 요청을 보내면 Config 서버의 환경 설정 파일에 정의된 메시지(dev/prod)에 따라 다른 응답을 반환합니다. </br>
 <img width="278" alt="image" src="https://github.com/user-attachments/assets/541e68ca-1522-4d21-9c99-f527481422b0" />
 
 
