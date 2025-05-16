@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.asd</groupId>
-	<artifactId>sw-board</artifactId>
+	<artifactId>sw-board-config</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>sw-board</name>
 	<description>Demo project for Spring Boot</description>
