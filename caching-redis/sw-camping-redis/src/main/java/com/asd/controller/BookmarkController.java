@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,7 +27,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/campingBookmark")
+@RequestMapping("/camping/bookmarks")
 public class BookmarkController {
 	private final UserService userService;
 	private final CampingService campingService;
@@ -34,7 +35,7 @@ public class BookmarkController {
 	private Logger logger = LoggerFactory.getLogger(BookmarkController.class);
 	
 	//즐겨찾기 리스트 조회
-	@GetMapping("/list")
+	@GetMapping
 	public List<CampingListDto> getBookmarkList(HttpServletRequest request) {
 		User user = userService.findUser(request); //유저 정보 추출
 		logger.info("[getBookmarkList] 즐겨찾기 기능을 수행합니다.");
@@ -42,8 +43,8 @@ public class BookmarkController {
 	}
 	
 	//즐겨찾기 추가
-	@PostMapping("/add")
-	public Map<String, String> addBookmark(HttpServletRequest request, @RequestParam String camping_id) {
+	@PostMapping("/{camping_id}")
+	public Map<String, String> addBookmark(HttpServletRequest request, @PathVariable String camping_id) {
 		User user = userService.findUser(request); //유저 정보 추출
 		Camping camping = campingService.getCamping(Long.parseLong(camping_id)); //해당 캠핑장 추출
 		
@@ -58,15 +59,15 @@ public class BookmarkController {
 		
 		camping.addCampingBookmark(campingBookmark);
 		
-		campingService.addCamping(camping); //cascade를 통한 즐겨찾기 저장
+		campingService.addCamping(camping);
 		Map<String, String> response = new HashMap<>();
 		response.put("check", "true");
     	return response;
 	}
 	
 	//즐겨찾기 삭제
-	@DeleteMapping("/delete")
-	public Map<String, String> deleteBookmark(HttpServletRequest request, @RequestParam String camping_id) {
+	@DeleteMapping("/{camping_id}")
+	public Map<String, String> deleteBookmark(HttpServletRequest request, @PathVariable String camping_id) {
 		User user = userService.findUser(request); //유저 정보 추출
 		bookmarkService.deleteBookmark(user, campingService.getCamping(Long.parseLong(camping_id)));
 		Map<String, String> response = new HashMap<>();

@@ -7,10 +7,11 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.asd.DTO.CampingRequestDto;
@@ -22,15 +23,15 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/campingAdmin")
+@RequestMapping("/camping/admin")
 public class AdminController {
 	private final CampingService campingService;
 	private final ReviewService reviewService;
 	private Logger logger = LoggerFactory.getLogger(AdminController.class);
 	
 	//캠핑장 삭제 + redis
-	@DeleteMapping("/delete")
-	public Map<String, String> deleteCamping(@RequestParam String camping_id) {
+	@DeleteMapping("/{camping_id}")
+	public Map<String, String> deleteCamping(@PathVariable String camping_id) {
 		campingService.deleteCamping(Long.parseLong(camping_id));
 		Map<String, String> response = new HashMap<>();
 		response.put("check", "true");
@@ -39,7 +40,7 @@ public class AdminController {
 	}
 	
 	//캠핑장 등록 + redis
-	@PostMapping("/add")
+	@PostMapping
 	public Map<String, String> addCamping(@RequestBody CampingRequestDto campingRequestDto) {
 		Camping camping = new Camping(); //캠핑장 정보 삽입
 		camping.setName(campingRequestDto.getName());
@@ -59,10 +60,10 @@ public class AdminController {
 	}
 	
 	//캠핑장 정보 수정 + redis
-	@PostMapping("/modify")
-	public Map<String, String> modifyCamping(@RequestBody CampingRequestDto campingRequestDto) {
+	@PatchMapping("/{camping_id}")
+	public Map<String, String> modifyCamping(@PathVariable String camping_id, @RequestBody CampingRequestDto campingRequestDto) {
 		Camping camping = new Camping(); //캠핑장 수정 정보 삽입
-		camping.setId(Long.parseLong(campingRequestDto.getId()));	
+		camping.setId(Long.parseLong(camping_id));	
 		camping.setName(campingRequestDto.getName());
 		camping.setAddress(campingRequestDto.getAddress());
 		camping.setDistrict(campingRequestDto.getDistrict());
@@ -78,8 +79,8 @@ public class AdminController {
 	}
 	
 	//후기 삭제
-	@DeleteMapping("/delete/review")
-	public Map<String, String> deleteReview(@RequestParam String review_id) {
+	@DeleteMapping("/reviews/{review_id}")
+	public Map<String, String> deleteReview(@PathVariable String review_id) {
 		reviewService.deleteReview(Long.parseLong(review_id));
 		Map<String, String> response = new HashMap<>();
 		response.put("check", "true");

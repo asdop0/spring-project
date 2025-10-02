@@ -30,7 +30,7 @@ public class CampingService {
 	
 	private Logger logger = LoggerFactory.getLogger(CampingService.class);
 	
-	//캠핑장 전체 리스트 출력
+	//캠핑장 전체 리스트 출력 + redis
 	public List<CampingListDto> campingList() {
 		long startTime = System.currentTimeMillis();
 		
@@ -61,6 +61,21 @@ public class CampingService {
 	    } catch (Exception e) {
 	        throw new IllegalArgumentException("[campingList] 직렬화 실패");
 	    }
+		long endTime = System.currentTimeMillis();
+    	System.out.println("응답속도 (캐시 MISS) : " + (endTime - startTime) + "ms");
+		return campingListDtos;
+	}
+	
+	//캠핑장 전체 리스트 출력
+	public List<CampingListDto> campingList2() {
+		long startTime = System.currentTimeMillis();
+		List<CampingListDto> campingListDtos = new ArrayList<>();
+		
+		
+		List<Camping> campings = campingRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));	
+		campingListDtos = campings.stream()
+		        .map(CampingListDto::toDto)
+		        .collect(Collectors.toList());
 		long endTime = System.currentTimeMillis();
     	System.out.println("응답속도 (캐시 MISS) : " + (endTime - startTime) + "ms");
 		return campingListDtos;

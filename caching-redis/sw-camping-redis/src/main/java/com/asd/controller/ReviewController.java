@@ -6,7 +6,9 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,7 +25,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/campingReview")
+@RequestMapping("/camping/reviews")
 public class ReviewController {
 	private final CampingService campingService;
 	private final UserService userService;
@@ -31,18 +33,19 @@ public class ReviewController {
 	private Logger logger = LoggerFactory.getLogger(ReviewController.class);
 	
 	//후기 등록
-	@PostMapping("/add")
-	public Map<String, String> addReview(HttpServletRequest request, @RequestParam String camping_id, @RequestParam String content) {
+	@PostMapping("/{camping_id}")
+	public Map<String, String> addReview(HttpServletRequest request, @PathVariable String camping_id, 
+			@RequestBody Map<String, String> requestData) {
 		User user = userService.findUser(request); //유저 정보 추출
 		
 		CampingReview campingReview = new CampingReview(); //후기 정보 삽입
-		campingReview.setContent(content);
+		campingReview.setContent(requestData.get("content"));
 		campingReview.setUser(user);
 		
 		Camping camping = campingService.getCamping(Long.parseLong(camping_id)); //해당 캠핑장 추출
 		camping.addCampingReview(campingReview);
 
-		campingService.addCamping(camping); //cascade를 통한 후기 저장
+		campingService.addCamping(camping);
 		Map<String, String> response = new HashMap<>();
 		response.put("check", "true");
 		logger.info("[addReview] {} 사용자가 {} 캠핑의 후기를 작성했습니다.", user.getId(), camping_id);
@@ -50,8 +53,8 @@ public class ReviewController {
 	}
 	
 	//후기 삭제
-	@DeleteMapping("/delete")
-	public Map<String, String> deleteReview(@RequestParam String review_id) {
+	@DeleteMapping("/{review_id}")
+	public Map<String, String> deleteReview(@PathVariable String review_id) {
 		reviewService.deleteReview(Long.parseLong(review_id));
 		Map<String, String> response = new HashMap<>();
 		response.put("check", "true");
